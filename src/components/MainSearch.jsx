@@ -6,7 +6,9 @@ import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { fetchJobs } from "../store/actions";
 import {useDispatch} from "react-redux"
-import {useState} from "react"
+import {useSelector} from "react-redux"
+
+import {useState, useEffect} from "react"
 
 // const mapDispatchToProps = (dispatch) => ({
 //   fetchJobs: (baseEndpoint, query) => dispatch(fetchJobs(baseEndpoint, query)),
@@ -14,21 +16,26 @@ import {useState} from "react"
 
 const MainSearch = () => {
   const dispatch = useDispatch()
-
+  const jobs = useSelector((state) => state.jobs.elements)
+  
   const [query, setQuery] = useState("")
-  const [jobs, Setjobs] = useState([])
+  
 
   // state = {
   //   query: "",
   //   jobs: [],
   // };
 
+  useEffect(()=>{
+    dispatch(fetchJobs("https://strive-jobs-api.herokuapp.com/jobs?search=", ""))
+  },[])
   
   // baseEndpoint = "https://strive-jobs-api.herokuapp.com/jobs?search=";
   // handleChange = (e) => {
   //   this.setState({ query: e.target.value });
   // };
 
+  
   // handleSubmit = async (e) => {
   //   e.preventDefault();
   //   dispatch(baseEndpoint, query);
@@ -45,18 +52,19 @@ const MainSearch = () => {
             </Link>
           </Col>
           <Col xs={10} className="mx-auto">
-            <Form onSubmit={dispatch(fetchJobs("https://strive-jobs-api.herokuapp.com/jobs?search=", query))}>
+            <Form onSubmit={(e)=>{e.preventDefault(); dispatch(fetchJobs("https://strive-jobs-api.herokuapp.com/jobs?search=", query))}}>
               <Form.Control
                 type="search"
                 value={query}
-                onChange={setQuery}
+                onChange={(e)=>{setQuery(e.target.value)}}
+               
                 
                 placeholder="type and press Enter"
               />
             </Form>
           </Col>
           <Col xs={10} className="mx-auto mb-5">
-            {jobs.elements.map((jobData) => (
+            {jobs?.map((jobData) => (
               <JobResult key={uniqid()} data={jobData} />
             ))}
           </Col>

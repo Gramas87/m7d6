@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Star, StarFill } from "react-bootstrap-icons";
 import { addToFav, removeFromFav } from "../store/actions";
 import { connect } from "react-redux";
+import {useDispatch} from "react-redux"
 
 const mapStateToProps = (s) => s;
 
@@ -18,6 +19,7 @@ function JobResult({
   addToFavourites,
   removeFromFavourites,
 }) {
+  
   const isFav = favourites.elements.includes(data.company_name);
   console.log(isFav, favourites);
   const toggleFavourite = () => {

@@ -22,7 +22,7 @@ const Favourites = () => {
         <Row>
           <Col xs={12}>
             <ListGroup>
-              {favourites?.elements.map((f) => (
+              {favourites?.map((f) => (
                 <ListGroupItem>
                   <StarFill onClick={() => dispatch(removeFromFav(f))} />
                   <span>{f}</span>
